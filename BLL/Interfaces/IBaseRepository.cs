@@ -19,5 +19,19 @@ namespace BLL.Interfaces
         void DeleteRange(IEnumerable<T> entities);
         Task<int> CountAsync();
 
+        // Code with shadman
+
+        void DELETE(T entityToDelete);
+        void Delete(object id);
+        IEnumerable<T> Get(
+            Expression<Func<T, bool>> filter = null,
+            Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null,
+            string includeProperties = "");
+        T GetByID(object id);
+        IEnumerable<T> GetWithRawSql(string query,
+            params object[] parameters);
+        void Insert(T entity);
+        void UPDATE(T entityToUpdate);
+
     }
 }

@@ -11,6 +11,8 @@ namespace BLL.Models
         public int Id { get; set; }
         public string ImageTitle { get; set; }
         public string ImageData { get; set; }
+        public DateTime InsertedOn { get; set; }
+        public string ImagePath { get; set; }
         public Product Product { get; set; }
         public int productId { get; set; }
     }
