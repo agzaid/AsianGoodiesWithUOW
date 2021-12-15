@@ -1,5 +1,6 @@
 ﻿using BLL.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,65 +12,109 @@ namespace DAL.Repositrories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
-        private readonly DataContext _context;
+        protected readonly DataContext _context;
+        protected readonly DbSet<T> _dbSet;
+        protected readonly ILogger _logger;
 
-        public BaseRepository(DataContext context)
+        public BaseRepository(DataContext context, ILogger logger)
         {
             _context = context;
+            _dbSet = _context.Set<T>();
+            _logger = logger;
         }
 
-        public async Task<T> AddAsync(T entity)
+        #region code with Mosh
+        public virtual void Add(T entity)
         {
-            await _context.Set<T>().AddAsync(entity);
-            return entity;
+            _dbSet.Add(entity);
         }
 
-        public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
+        public void AddRange(IEnumerable<T> entities)
         {
-            await _context.Set<T>().AddRangeAsync(entities);
-            return entities;
+            _dbSet.AddRange(entities);
         }
 
-        public async Task<int> CountAsync()
+        public IEnumerable<T> Find(Expression<Func<T, bool>> predicate)
         {
-            return await _context.Set<T>().CountAsync();
+            return _dbSet.Where(predicate);
         }
 
-        public void Delete(T entity)
+        public virtual async Task<T> Get(int id)
         {
-            _context.Set<T>().Remove(entity);
+            return await _dbSet.FindAsync(id);
         }
 
-        public void DeleteRange(IEnumerable<T> entities)
+        public virtual async Task<IEnumerable<T>> GetAll()
         {
-            _context.Set<T>().RemoveRange(entities);
+            return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null)
+        public virtual bool Remove(T entityToDelete)
         {
-            IQueryable<T> query = _context.Set<T>();
-            if (includes != null)
-                foreach (var include in includes)
-                    query = query.Include(include);
-
-            return await query.SingleOrDefaultAsync(criteria);
+            _dbSet.Remove(entityToDelete);
+            return true;
         }
 
-      
-        public async Task<IEnumerable<T>> GetAllAsync()
+        public bool RemoveRange(IEnumerable<T> entities)
         {
-            return await _context.Set<T>().ToListAsync();
+            _dbSet.RemoveRange(entities);
+            return true;
         }
 
-        public async Task<T> GetByIdAsync(int id)
-        {
-            return await _context.Set<T>().FindAsync(id);
-        }
+        #endregion
 
-        public T Update(T entity)
-        {
-            _context.Set<T>().Update(entity);
-            return entity;
-        }
+        //public async Task<T> AddAsync(T entity)
+        //{
+        //    await _context.Set<T>().AddAsync(entity);
+        //    return entity;
+        //}
+
+        //public async Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities)
+        //{
+        //    await _context.Set<T>().AddRangeAsync(entities);
+        //    return entities;
+        //}
+
+        //public async Task<int> CountAsync()
+        //{
+        //    return await _context.Set<T>().CountAsync();
+        //}
+
+        //public void Delete(T entity)
+        //{
+        //    _context.Set<T>().Remove(entity);
+        //}
+
+        //public void DeleteRange(IEnumerable<T> entities)
+        //{
+        //    _context.Set<T>().RemoveRange(entities);
+        //}
+
+        //public async Task<T> FindAsync(Expression<Func<T, bool>> criteria, string[] includes = null)
+        //{
+        //    IQueryable<T> query = _context.Set<T>();
+        //    if (includes != null)
+        //        foreach (var include in includes)
+        //            query = query.Include(include);
+
+        //    return await query.SingleOrDefaultAsync(criteria);
+        //}
+
+
+        //public async Task<IEnumerable<T>> GetAllAsync()
+        //{
+        //    return await _context.Set<T>().ToListAsync();
+        //}
+
+        //public async Task<T> GetByIdAsync(int id)
+        //{
+        //    return await _context.Set<T>().FindAsync(id);
+        //}
+
+        //public T Update(T entity)
+        //{
+        //    _context.Set<T>().Update(entity);
+        //    return entity;
+        //}
     }
 }

@@ -1,3 +1,4 @@
+using BLL;
 using BLL.Interfaces;
 using DAL;
 using DAL.Repositrories;
@@ -36,6 +37,9 @@ namespace AsianGoodiesWithUOW
                     b => b.MigrationsAssembly(typeof(DataContext).Assembly.FullName)));
 
             services.AddTransient(typeof(IBaseRepository<>), typeof(BaseRepository<>));
+
+            //adding unit of work to dependency injection container
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddCors();
 
