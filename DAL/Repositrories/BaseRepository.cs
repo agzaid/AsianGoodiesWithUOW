@@ -12,15 +12,19 @@ namespace DAL.Repositrories
 {
     public class BaseRepository<T> : IBaseRepository<T> where T : class
     {
+
         protected readonly DataContext _context;
         protected readonly DbSet<T> _dbSet;
         protected readonly ILogger _logger;
+
+
 
         public BaseRepository(DataContext context, ILogger logger)
         {
             _context = context;
             _dbSet = _context.Set<T>();
             _logger = logger;
+
         }
 
         #region code with Mosh
@@ -44,7 +48,9 @@ namespace DAL.Repositrories
             return await _dbSet.FindAsync(id);
         }
 
+
         public virtual async Task<IEnumerable<T>> GetAll()
+
         {
             return await _dbSet.ToListAsync();
         }
@@ -55,11 +61,41 @@ namespace DAL.Repositrories
             return true;
         }
 
-        public bool RemoveRange(IEnumerable<T> entities)
+        public IEnumerable<T> Get(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = "")
+        {
+            IQueryable<T> query = dbSet;
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            if (includeProperties != null)
+            {
+                foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(includeProperty);
+                }
+            }
+
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            else
+            {
+                return query.ToList();
+            }
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync()
+
         {
             _dbSet.RemoveRange(entities);
             return true;
         }
+
 
         #endregion
 
@@ -116,5 +152,7 @@ namespace DAL.Repositrories
         //    _context.Set<T>().Update(entity);
         //    return entity;
         //}
+=======
+    
     }
 }

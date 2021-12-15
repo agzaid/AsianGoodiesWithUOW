@@ -20,6 +20,7 @@ namespace BLL.Interfaces
         //Task<int> CountAsync();
 
 
+
      #region code with Mosh
         bool Remove(T entityToDelete);
         bool RemoveRange(IEnumerable<T> entities);
@@ -32,5 +33,6 @@ namespace BLL.Interfaces
         void AddRange(IEnumerable<T> entities);
 
      #endregion
+
     }
 }
