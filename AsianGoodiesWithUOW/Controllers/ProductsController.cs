@@ -13,21 +13,6 @@ namespace AsianGoodiesWithUOW.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IBaseRepository<Product> _productRepo;
-
-        public ProductsController(IBaseRepository<Product> productRepo)
-        {
-            _productRepo = productRepo;
-        }
-        [HttpGet]
-        public async Task<IActionResult> GetById()
-        {
-            return Ok(await _productRepo.GetByIdAsync(1));
-        }
-        [HttpGet("GetByName")]
-        public async Task<IActionResult> GetByName()
-        {
-            return Ok(await _productRepo.FindAsync(s => s.Name == "salad", new[] { "User" }));
-        }
+        
     }
 }
