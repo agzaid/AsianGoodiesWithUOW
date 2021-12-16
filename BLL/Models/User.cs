@@ -13,7 +13,7 @@ namespace BLL.Models
         [Required,MaxLength(150)]
         public string firstName { get; set; }
         public string LastName { get; set; }
-        public List<Product> Products { get; set; } = new List<Product>();
+        public List<Product> Products { get; set; }
 
     }
 }

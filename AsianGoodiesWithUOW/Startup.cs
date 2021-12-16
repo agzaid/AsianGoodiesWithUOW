@@ -43,9 +43,9 @@ namespace AsianGoodiesWithUOW
 
             services.AddCors();
 
-            //services.AddControllersWithViews()
-            //          .AddJsonOptions(o => o.JsonSerializerOptions
-            //          .ReferenceHandler = ReferenceHandler.Preserve);
+            services.AddControllers()
+           .AddJsonOptions(o => o.JsonSerializerOptions
+               .ReferenceHandler = ReferenceHandler.Preserve);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

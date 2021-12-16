@@ -16,7 +16,7 @@ namespace DAL.Repositrories
         public UserRepository(DataContext context, ILogger logger): base(context, logger)
         {
         }
-        #region own IuserRepository methods
+        #region own IUserRepository methods
         public IEnumerable<User> GetTopFavoriteUsers(int count)
         {
             return _context.Users.OrderByDescending(c => c.firstName).Take(count).ToList();
@@ -40,6 +40,19 @@ namespace DAL.Repositrories
                 return new List<User>();
             }
         }
+        //public override User Get(int id)
+        //{
+        //    try
+        //    {
+        //        return _dbSet.Find(id);
+        //    }
+        //    catch (Exception ex)
+        //    {
+
+        //        throw;
+        //    }
+            
+        //}
         public override void Add(User entity)
         {
             try
