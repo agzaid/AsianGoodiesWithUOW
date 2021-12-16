@@ -25,7 +25,7 @@ namespace BLL.Interfaces
         bool Remove(T entityToDelete);
         bool RemoveRange(IEnumerable<T> entities);
 
-        Task<T> Get(int id);
+        T Get(int id);
         Task<IEnumerable<T>> GetAll();
         IEnumerable<T> Find(Expression<Func<T, bool>> predicate);
         

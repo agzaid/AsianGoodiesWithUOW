@@ -36,11 +36,17 @@ namespace AsianGoodiesWithUOW.Controllers
             }
             return new JsonResult("Something went wrong") { StatusCode = 500 };
         }
-        [HttpGet]
+        [HttpGet("GetAllUsers")]
         public async Task<IActionResult> GetAll()
         {
             var users = await _unitOfWork.Users.GetAll();
             return Ok(users);
+        }
+        [HttpGet("{id}")]
+        public IActionResult Get(int id)
+        {
+            var user = _unitOfWork.Users.Get(id);
+            return Ok(user);
         }
     }
 }
