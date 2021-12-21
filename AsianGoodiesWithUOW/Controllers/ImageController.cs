@@ -46,7 +46,7 @@ namespace AsianGoodiesWithUOW.Controllers
                             file.CopyTo(stream);
                         }
                         Image imageUpload = new Image();
-                        imageUpload.ImagePath = path;
+                        imageUpload.ImagePath = newFileName;
                         imageUpload.InsertedOn = DateTime.Now;
                         _context.Images.Add(imageUpload);
                         _context.SaveChanges();

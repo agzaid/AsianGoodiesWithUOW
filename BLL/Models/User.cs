@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,7 +14,9 @@ namespace BLL.Models
         [Required,MaxLength(150)]
         public string firstName { get; set; }
         public string LastName { get; set; }
-        public List<Product> Products { get; set; }
+        public DateTime InsertedOn { get; set; } 
+        public string ImageName { get; set; }
+        public List<Product> Products { get; set; } = new List<Product>();
 
     }
 }
